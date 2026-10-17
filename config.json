@@ -1,0 +1,159 @@
+{
+  "panel": {
+    "name": "X28 Control Center",
+    "listen_host": "0.0.0.0",
+    "listen_port": 8090,
+    "theme": "dark",
+    "history_points": 1800
+  },
+  "setup": {
+    "done": true,
+    "done_at": "2026-10-16 18:00:00",
+    "log_source": ""
+  },
+  "ui": {
+    "wifi_auto_lock": true,
+    "chart_range": "5m",
+    "active_modem": "x28-main"
+  },
+  "modems": [
+    {
+      "id": "x28-main",
+      "name": "X28 (نمونه)",
+      "host": "192.168.8.1",
+      "user": "admin",
+      "password": "env:MODEM_PASS",
+      "driver": "zlt_web",
+      "web_port": 8090,
+      "scheme": "http"
+    }
+  ],
+  "security": {
+    "password": "",
+    "session_hours": 24.0,
+    "action_token": "",
+    "allow_hosts": []
+  },
+  "storage": {
+    "db": "data/panel.db",
+    "keep_days": 30,
+    "snapshot_dir": "data/backups"
+  },
+  "plugins": {
+    "ping": {
+      "enabled": true,
+      "count": 3,
+      "timeout_ms": 1500,
+      "target": "127.0.0.1",
+      "method": "auto",
+      "tcp_port": 8090,
+      "interval": 5.0
+    },
+    "snmp": {
+      "enabled": false,
+      "version": "2c",
+      "community": "public",
+      "port": 161,
+      "if_index": 1
+    },
+    "zlt": {
+      "enabled": true,
+      "interval": 20,
+      "login_path": "/cgi-bin/login.cgi",
+      "login_user_field": "username",
+      "login_pass_field": "password",
+      "password_transform": "plain",
+      "status_path": "",
+      "status_map": "",
+      "status_regex": "",
+      "band_lock_path": "",
+      "band_lock_field": "band_lock",
+      "band_lock_value_field": "band",
+      "network_mode_path": "",
+      "network_mode_field": "network_mode",
+      "network_mode_values": "{\"auto\":\"0\",\"4g\":\"1\",\"5g\":\"2\"}",
+      "apn_path": "",
+      "reboot_path": "",
+      "smart_reboot_path": "",
+      "rescan_path": "",
+      "log_path": "",
+      "clients_path": "",
+      "payload_transform": "form",
+      "dns_path": "",
+      "guest_path": "",
+      "macbind_path": "/reqproc/proc_get?cmd=dhcp_leases",
+      "txpower5_path": ""
+    },
+    "logwatch": {
+      "enabled": true,
+      "interval": 600,
+      "source": "file",
+      "path": "/home/user/x28-panel/data/sample/web_event_super.log",
+      "alert_sensitive": true
+    },
+    "ssh": {
+      "enabled": false,
+      "method": "ssh",
+      "port": 22,
+      "user": "admin",
+      "password": "env:MODEM_PASS",
+      "info_command": "show version",
+      "reboot_command": "reboot"
+    },
+    "tr069": {
+      "enabled": true,
+      "genieacs_url": "http://127.0.0.1:7557",
+      "device_id": "",
+      "user": "",
+      "password": "env:ACS_PASS"
+    },
+    "telegram": {
+      "enabled": false,
+      "bot_token": "env:TG_TOKEN",
+      "chat_id": "",
+      "only_levels": "critical,warn",
+      "quiet_minutes": 5
+    },
+    "ai": {
+      "enabled": true,
+      "mode": "offline",
+      "base_url": "https://api.openai.com/v1",
+      "api_key": "env:AI_API_KEY",
+      "model": "gpt-4o-mini",
+      "auto_interval": 0,
+      "interval": 5.0
+    },
+    "acceptance": {},
+    "mock": {
+      "enabled": true,
+      "interval": 2,
+      "mode": "fallback",
+      "scenario": "mid",
+      "staleness": 45,
+      "seed": 0
+    }
+  },
+  "globals": {
+    "slow_poll_seconds": 60
+  },
+  "alerts": {
+    "enabled": true,
+    "offline_seconds": 60,
+    "rtt_ms": 250,
+    "rsrp_dbm": -104,
+    "sinr_db": 7,
+    "speed_low_mbps": 3,
+    "cooldown_s": 900,
+    "quiet_window": [
+      "06:00",
+      "09:00"
+    ],
+    "rsrq_db": -14,
+    "rssi_dbm": -86,
+    "std_max_db": 5,
+    "trend_drop_db": 7,
+    "signal_alerts": true,
+    "quiet_exclude": false,
+    "loss_pct": 0.0
+  }
+}

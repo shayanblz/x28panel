@@ -1,0 +1,199 @@
+{
+  "panel": {
+    "name": "X28 Control Center",
+    "listen_host": "127.0.0.1",
+    "listen_port": 8080,
+    "theme": "dark",
+    "history_points": 1800
+  },
+  "modems": [
+    {
+      "id": "x28-main",
+      "name": "X28 اصلی",
+      "host": "192.168.1.1",
+      "user": "admin",
+      "password": "env:MODEM_PASS",
+      "driver": "zlt_web",
+      "web_port": 80,
+      "dns_check": "1.1.1.1"
+    }
+  ],
+  "security": {
+    "password": "",
+    "session_hours": 24,
+    "action_token": "env:PANEL_TOKEN",
+    "allow_hosts": []
+  },
+  "storage": {
+    "db": "data/panel.db",
+    "keep_days": 30,
+    "snapshot_dir": "data/backups"
+  },
+  "alerts": {
+    "enabled": true,
+    "offline_seconds": 60,
+    "rtt_ms": 250,
+    "rsrp_dbm": -105,
+    "sinr_db": 6,
+    "speed_low_mbps": 3,
+    "cooldown_s": 900
+  },
+  "plugins": {
+    "ping": {
+      "enabled": true,
+      "count": 3,
+      "timeout_ms": 1500,
+      "target": ""
+    },
+    "snmp": {
+      "enabled": true,
+      "version": "2c",
+      "community": "public",
+      "port": 161,
+      "if_index": 1
+    },
+    "zlt": {
+      "enabled": true,
+      "interval": 15,
+      "login_path": "/cgi-bin/login.cgi",
+      "login_user_field": "username",
+      "login_pass_field": "password",
+      "password_transform": "plain",
+      "status_path": "",
+      "status_map": "",
+      "status_regex": "",
+      "band_lock_path": "",
+      "band_lock_field": "band_lock",
+      "band_lock_value_field": "band",
+      "network_mode_path": "",
+      "network_mode_field": "network_mode",
+      "network_mode_values": "{\"auto\":\"0\",\"4g\":\"1\",\"5g\":\"2\"}",
+      "apn_path": "",
+      "reboot_path": "",
+      "smart_reboot_path": "",
+      "rescan_path": "",
+      "log_path": "",
+      "clients_path": "",
+      "payload_transform": "form",
+      "apn_field": "apn",
+      "lan_path": "",
+      "dhcp_path": "",
+      "dns_path": "",
+      "mtu_path": "",
+      "dmz_path": "",
+      "upnp_path": "",
+      "port_forward_path": "",
+      "port_forward_list_path": "",
+      "vpn_path": "",
+      "ddns_path": "",
+      "ipv6_path": "",
+      "macclone_path": "",
+      "cell_lock_path": "",
+      "bandwidth_path": "",
+      "neighbors_path": "",
+      "wifi24_path": "",
+      "wifi5_path": "",
+      "wifi_advance_path": "",
+      "wifi5_advance_path": "",
+      "txpower24_path": "",
+      "txpower5_path": "",
+      "guest_path": "",
+      "wps_path": "",
+      "wps_push_path": "",
+      "macfilter_path": "",
+      "wifi_clients_path": "",
+      "wifi_scan_path": "",
+      "wifi_schedule_path": "",
+      "country_path": "",
+      "wifi_onoff_path": ""
+    },
+    "logwatch": {
+      "enabled": true,
+      "interval": 300,
+      "source": "modem",
+      "path": "",
+      "alert_sensitive": true
+    },
+    "ssh": {
+      "enabled": false,
+      "method": "ssh",
+      "port": 22,
+      "user": "admin",
+      "password": "env:MODEM_PASS",
+      "info_command": "show version",
+      "reboot_command": "reboot"
+    },
+    "tr069": {
+      "enabled": false,
+      "genieacs_url": "http://127.0.0.1:7557",
+      "device_id": "",
+      "user": "",
+      "password": "env:ACS_PASS"
+    },
+    "telegram": {
+      "enabled": false,
+      "bot_token": "env:TG_TOKEN",
+      "chat_id": "",
+      "only_levels": "critical,warn",
+      "quiet_minutes": 5
+    },
+    "ai": {
+      "enabled": false,
+      "mode": "offline",
+      "base_url": "https://api.openai.com/v1",
+      "api_key": "env:AI_API_KEY",
+      "model": "gpt-4o-mini",
+      "auto_interval": 0
+    },
+    "netinfo": {
+      "enabled": true,
+      "interval": 60,
+      "public_ip_url": "https://api.ipify.org",
+      "pub_ip_urls": "https://ifconfig.me/ip,https://icanhazip.com",
+      "dns_servers": "1.1.1.1,8.8.8.8,178.22.122.100",
+      "dns_test_domain": "example.com",
+      "ping_targets": "1.1.1.1:443,8.8.8.8:53",
+      "check_dns": true,
+      "check_public_ip": true,
+      "watchnote_alerts": true
+    },
+    "bandwatch": {
+      "enabled": true,
+      "interval": 60,
+      "switch_alert_per_hour": 6,
+      "rsrp_low": -108,
+      "low_minutes": 10,
+      "dry_run": true,
+      "apply_profile": "",
+      "quiet_window": ""
+    },
+    "speed": {
+      "enabled": true,
+      "interval": 0,
+      "down_url": "https://speed.cloudflare.com/__down?bytes=25000000",
+      "max_seconds": 12,
+      "save_to_history": true
+    },
+    "devwatch": {
+      "enabled": true,
+      "interval": 5,
+      "source": "auto",
+      "poll_sec": 20,
+      "store_every": 15,
+      "keep_days": 3,
+      "online_within": 90
+    }
+  },
+  "globals": {
+    "slow_poll_seconds": 60
+  },
+  "ui": {
+    "wifi_auto_lock": true,
+    "chart_range": "5m"
+  },
+  "setup": {
+    "done": false,
+    "done_at": null,
+    "log_source": ""
+  }
+}
