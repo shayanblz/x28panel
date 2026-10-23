@@ -384,8 +384,10 @@
   };
 
   /* ── ring gauge (SVG) ───────────────────────────────────────────────── */
+  let ringSeq = 0;
   C.ring = function (container, opts) {
     opts = opts || {};
+    const gid = 'ringGrad' + (++ringSeq);
     const size = opts.size || 132;
     const stroke = opts.stroke || 10;
     const r = (size - stroke) / 2 - 4;
@@ -394,13 +396,13 @@
     const circumference = 2 * Math.PI * r * (sweep / 360);
     container.innerHTML =
       '<svg viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '">' +
-      '<defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">' +
+      '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="1" y2="1">' +
       '<stop offset="0" stop-color="' + (opts.colorFrom || '#fb7185') + '"/>' +
       '<stop offset=".5" stop-color="' + (opts.colorMid || '#fbbf24') + '"/>' +
       '<stop offset="1" stop-color="' + (opts.colorTo || '#2ee6ae') + '"/></linearGradient></defs>' +
       '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="var(--card-3)" stroke-width="' + stroke + '" ' +
       'stroke-linecap="round" stroke-dasharray="' + circumference + ' ' + (circumference * 2) + '" transform="rotate(' + start + ' ' + cx + ' ' + cy + ')"/>' +
-      '<circle class="ring-val" cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="url(#ringGrad)" stroke-width="' + stroke + '" ' +
+      '<circle class="ring-val" cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="url(#' + gid + ')" stroke-width="' + stroke + '" ' +
       'stroke-linecap="round" stroke-dasharray="0 ' + (circumference * 3) + '" transform="rotate(' + start + ' ' + cx + ' ' + cy + ')" style="transition:stroke-dasharray .7s cubic-bezier(.22,.9,.24,1)"/>' +
       '</svg>';
     const arc = container.querySelector('.ring-val');
