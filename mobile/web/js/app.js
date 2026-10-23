@@ -29,10 +29,22 @@
     ]);
   }
 
-  function applyKeepAwake() {
-    if (U.bridge.has('setKeepAwake')) {
-      try { global.Android.setKeepAwake(!!S.state.settings.keepAwake); } catch (e) {}
-    }
+  let lastKeepAwake = null;
+  function applyKeepAwake(force) {
+    if (!U.bridge.has('setKeepAwake')) return;
+    const want = !!S.state.settings.keepAwake;
+    if (!force && want === lastKeepAwake) return;
+    lastKeepAwake = want;
+    try { global.Android.setKeepAwake(want); } catch (e) {}
+  }
+
+  let lastDarkBars = null;
+  function applySystemBars() {
+    if (!U.bridge.has('setSystemBars')) return;
+    const dark = S.state.settings.theme !== 'light';
+    if (dark === lastDarkBars) return;
+    lastDarkBars = dark;
+    try { global.Android.setSystemBars(dark); } catch (e) {}
   }
 
   function boot() {
@@ -42,7 +54,8 @@
 
     say('آماده‌سازی رابط…');
     ui.init();
-    applyKeepAwake();
+    applyKeepAwake(true);
+    applySystemBars();
 
     /* hardware back: keep onboarding open, defer everything else to shell */
     const shellBack = global.__x28Back;
@@ -57,6 +70,7 @@
       const theme = state.settings.theme;
       if (document.documentElement.getAttribute('data-theme') !== theme) S.applyTheme(theme);
       applyKeepAwake();
+      applySystemBars();
     });
 
     document.addEventListener('keydown', (e) => {
