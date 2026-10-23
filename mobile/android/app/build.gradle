@@ -1,0 +1,91 @@
+plugins {
+    id 'com.android.application'
+}
+
+def keystoreFile = System.getenv('X28_KEYSTORE')
+def keystorePass = System.getenv('X28_KEYSTORE_PASSWORD')
+def keyAlias = System.getenv('X28_KEY_ALIAS')
+def keyPass = System.getenv('X28_KEY_PASSWORD')
+def hasSigning = keystoreFile != null && new File(keystoreFile).exists() && keystorePass && keyAlias && keyPass
+
+android {
+    namespace 'ir.x28panel.mobile'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "ir.x28panel.mobile"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    signingConfigs {
+        if (hasSigning) {
+            release {
+                storeFile file(keystoreFile)
+                storePassword keystorePass
+                keyAlias keyAlias
+                keyPassword keyPass
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (hasSigning) signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/*.kotlin_module', 'META-INF/*.version']
+        }
+    }
+}
+
+// The web UI at ../web is the single source of truth; Gradle copies it into the
+// Android assets folder on every build, so there is nothing to keep in sync by hand.
+def syncWebAssets = tasks.register('syncWebAssets', Sync) {
+    description = 'Copies the shared web UI into the Android assets folder.'
+    from rootProject.file('../web')
+    into layout.projectDirectory.dir('src/main/assets/web')
+    doFirst {
+        def index = rootProject.file('../web/index.html')
+        if (!index.exists()) {
+            throw new GradleException('web/index.html is missing — cannot package the UI.')
+        }
+    }
+}
+
+tasks.configureEach { task ->
+    if (task.name.startsWith('merge') && task.name.endsWith('Assets')) {
+        task.dependsOn syncWebAssets
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}

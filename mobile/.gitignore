@@ -1,0 +1,38 @@
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/captures/
+android/.cxx/
+*.iml
+.idea/
+.gradle/
+
+# Generated web assets (Gradle syncs web/ automatically, tools/sync-web.js does it manually)
+android/app/src/main/assets/web/
+
+# Build outputs
+dist/
+build/
+out/
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Node
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/

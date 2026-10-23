@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#070A11" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>X28 Mobile — مرکز کنترل مودم</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <!-- ── splash ─────────────────────────────────────────────── -->
+  <div id="splash" class="splash">
+    <div class="splash-glow" aria-hidden="true"></div>
+    <div class="splash-logo" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="72" height="72" fill="none">
+        <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#sg)" />
+        <path d="M21 21 43 43M43 21 21 43" stroke="#04121A" stroke-width="5.8" stroke-linecap="round"/>
+        <circle cx="47.5" cy="16.5" r="3.4" fill="#04121A" opacity=".72"/>
+        <defs>
+          <linearGradient id="sg" x1="4" y1="0" x2="62" y2="64" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#5EEAD4"/><stop offset=".55" stop-color="#22D3A6"/><stop offset="1" stop-color="#38BDF8"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="splash-name">X28 <span>Mobile</span></div>
+    <div class="splash-sub">مرکز کنترل مودم</div>
+    <div class="splash-bar"><i></i></div>
+    <div class="splash-state" id="splash-state">در حال آماده‌سازی…</div>
+  </div>
+
+  <!-- ── onboarding ─────────────────────────────────────────── -->
+  <section id="onboarding" class="onboarding" hidden></section>
+
+  <!-- ── app ────────────────────────────────────────────────── -->
+  <div id="app" class="app" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" id="brand-mark" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">X28 <span>Mobile</span></div>
+          <div class="brand-sub" id="brand-sub">مرکز کنترل مودم</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="btn-refresh" aria-label="به‌روزرسانی" title="به‌روزرسانی">
+          <span class="icon-slot" data-icon="refresh"></span>
+        </button>
+        <button class="icon-btn" id="btn-theme" aria-label="تغییر تم" title="تغییر تم">
+          <span class="icon-slot" data-icon="moon"></span>
+        </button>
+      </div>
+    </header>
+    <div class="net-strip" id="net-strip" aria-live="polite"></div>
+    <main id="view" class="view" tabindex="-1"></main>
+    <nav id="tabbar" class="tabbar" aria-label="ناوبری اصلی"></nav>
+  </div>
+
+  <div id="sheet-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/core/util.js"></script>
+  <script src="js/core/fmt.js"></script>
+  <script src="js/core/icons.js"></script>
+  <script src="js/core/charts.js"></script>
+  <script src="js/core/adapt.js"></script>
+  <script src="js/core/demo.js"></script>
+  <script src="js/core/device.js"></script>
+  <script src="js/core/store.js"></script>
+  <script src="js/ui/widgets.js"></script>
+  <script src="js/ui/shell.js"></script>
+  <script src="js/ui/onboarding.js"></script>
+  <script src="js/tabs/dashboard.js"></script>
+  <script src="js/tabs/signal.js"></script>
+  <script src="js/tabs/band.js"></script>
+  <script src="js/tabs/network.js"></script>
+  <script src="js/tabs/wifi.js"></script>
+  <script src="js/tabs/clients.js"></script>
+  <script src="js/tabs/events.js"></script>
+  <script src="js/tabs/actions.js"></script>
+  <script src="js/tabs/plugins.js"></script>
+  <script src="js/tabs/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

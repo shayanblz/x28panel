@@ -37,4 +37,11 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        # This repository currently ships no Python test suite in-tree; pytest
+        # exits with code 5 ("no tests collected"), which used to fail the job.
+        # Run the suite as soon as any test file exists, otherwise skip cleanly.
+        if ls test_*.py tests/test_*.py */test_*.py >/dev/null 2>&1; then
+          python -m pytest -q
+        else
+          echo "No Python tests found in the repository yet — skipping pytest."
+        fi
