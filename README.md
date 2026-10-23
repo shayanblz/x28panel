@@ -94,6 +94,30 @@ data/                 دیتابیس، بکاپ‌ها و پاسخ‌های خا
 | M4 امنیت و چند مودم | ✅ | `docs/M4_SECURITY_MULTIMODEM_FA.md` |
 | 📦 خروجی EXE ویندوز | ✅ | `docs/EXE_FA.md` (بسته: `release/X28Panel-Windows-x64.zip`) |
 
+## ۲٫۵) 📱 نسخهٔ موبایل — X28 Mobile (Android APK)
+
+یک کلاینت موبایل مستقل و کامل در پوشهٔ [`mobile/`](mobile/) قرار دارد: رابط فارسی راست‌به‌چپ،
+بهینه برای لمس، با **همان ۱۰ بخش پنل** — و یک **حالت نمایشی** که بدون مودم/پنل هم همهٔ
+نمودارها و رویدادها را زنده نشان می‌دهد.
+
+```bash
+cd mobile
+node tests/serve.js          # پیش‌نمایش در مرورگر: http://127.0.0.1:8080
+bash scripts/build_apk.sh    # ساخت APK: dist/X28Mobile-*.apk
+```
+
+* **اتصال واقعی:** تنظیمات → اتصال به پنل → آدرس `http://IP-کامپیوتر:8080` (+ توکن/رمز در صورت نیاز).
+  پنل را با `python app.py --host 0.0.0.0` اجرا کنید تا از گوشی دیده شود.
+* **درخواست‌ها نیتیو هستند** (پل Java + `HttpURLConnection`): بدون مشکل CORS و بدون خطای HTTP در اندروید ۹+.
+* **GitHub Actions** خودکار APK می‌سازد (`.github/workflows/android-mobile.yml`) و با تگ `v*`
+  به Release ضمیمه می‌کند.
+* راهنماها: [`mobile/README.md`](mobile/README.md) · [`mobile/docs/BUILD_APK_FA.md`](mobile/docs/BUILD_APK_FA.md) · [`mobile/docs/API_MAPPING_FA.md`](mobile/docs/API_MAPPING_FA.md)
+
+> داده‌ها tolerant خوانده می‌شوند: اگر نام فیلدی در فریم‌ور شما متفاوت باشد، فقط
+> `mobile/web/js/core/adapt.js` را به‌روز کنید؛ رابط کاربری تغییری لازم ندارد.
+
+---
+
 ## ۳) افزودن قابلیت جدید (قرارداد پلاگین)
 
 یک فایل در `plugins/` بسازید و قرارداد را رعایت کنید؛ همین. پنل خودش پلاگین را پیدا می‌کند،

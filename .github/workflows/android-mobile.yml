@@ -1,0 +1,105 @@
+name: Android Mobile APK
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/android-mobile.yml"
+  pull_request:
+    paths:
+      - "mobile/**"
+      - ".github/workflows/android-mobile.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build X28 Mobile APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    env:
+      X28_KEYSTORE_BASE64: ${{ secrets.X28_KEYSTORE_BASE64 }}
+      X28_KEYSTORE_PASSWORD: ${{ secrets.X28_KEYSTORE_PASSWORD }}
+      X28_KEY_ALIAS: ${{ secrets.X28_KEY_ALIAS }}
+      X28_KEY_PASSWORD: ${{ secrets.X28_KEY_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Validate web UI
+        run: |
+          node --check web/js/app.js
+          for f in web/js/core/*.js web/js/ui/*.js web/js/tabs/*.js; do node --check "$f"; done
+          test -f web/index.html
+          test -f web/assets/fonts/Vazirmatn-Regular.woff2
+
+      - name: Sync web assets
+        run: node tools/sync-web.js
+
+      - name: Run UI smoke tests
+        run: |
+          npm install --no-save jsdom
+          node tests/smoke.js
+
+      - name: Build debug APK
+        working-directory: mobile/android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Build signed release APK
+        if: env.X28_KEYSTORE_BASE64 != ''
+        working-directory: mobile/android
+        run: |
+          echo "$X28_KEYSTORE_BASE64" | base64 -d > /tmp/x28-release.jks
+          export X28_KEYSTORE=/tmp/x28-release.jks
+          export X28_KEYSTORE_PASSWORD="$X28_KEYSTORE_PASSWORD"
+          export X28_KEY_ALIAS="$X28_KEY_ALIAS"
+          export X28_KEY_PASSWORD="$X28_KEY_PASSWORD"
+          ./gradlew --no-daemon assembleRelease
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p dist
+          if [ -f android/app/build/outputs/apk/debug/app-debug.apk ]; then
+            cp android/app/build/outputs/apk/debug/app-debug.apk "dist/X28Mobile-${GITHUB_REF_NAME}-debug.apk"
+          fi
+          if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk "dist/X28Mobile-${GITHUB_REF_NAME}.apk"
+          fi
+          ls -lh dist
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: X28Mobile-apk
+          path: mobile/dist/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Attach APK to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: mobile/dist/*.apk
+          generate_release_notes: true
