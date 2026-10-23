@@ -109,6 +109,8 @@ bash scripts/build_apk.sh    # ساخت APK: dist/X28Mobile-*.apk
 * **اتصال واقعی:** تنظیمات → اتصال به پنل → آدرس `http://IP-کامپیوتر:8080` (+ توکن/رمز در صورت نیاز).
   پنل را با `python app.py --host 0.0.0.0` اجرا کنید تا از گوشی دیده شود.
 * **درخواست‌ها نیتیو هستند** (پل Java + `HttpURLConnection`): بدون مشکل CORS و بدون خطای HTTP در اندروید ۹+.
+* **دانلود APK:** [Releases → v1.0.0-mobile](https://github.com/shayanblz/x28panel/releases/tag/v1.0.0-mobile)
+  (نسخهٔ debug، نصب‌شدنی روی اندروید ۷+)
 * **GitHub Actions** خودکار APK می‌سازد (`.github/workflows/android-mobile.yml`) و با تگ `v*`
   به Release ضمیمه می‌کند.
 * راهنماها: [`mobile/README.md`](mobile/README.md) · [`mobile/docs/BUILD_APK_FA.md`](mobile/docs/BUILD_APK_FA.md) · [`mobile/docs/API_MAPPING_FA.md`](mobile/docs/API_MAPPING_FA.md)
